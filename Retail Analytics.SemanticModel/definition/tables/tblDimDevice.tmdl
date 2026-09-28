@@ -1,0 +1,33 @@
+table tblDimDevice
+	lineageTag: 2d4fec1e-c16c-48d0-8907-b098d14e2192
+
+	column DeviceType
+		dataType: string
+		lineageTag: f89e53e5-e69f-43d8-b544-d0264b2b2209
+		summarizeBy: none
+		sourceColumn: DeviceType
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeviceGroup
+		dataType: string
+		lineageTag: 7c353539-c700-4f15-a39c-1bdb8d85f90b
+		summarizeBy: none
+		sourceColumn: DeviceGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimDevice = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimDevice_Table = Source{[Item="tblDimDevice",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimDevice_Table,{{"DeviceType", type text}, {"DeviceGroup", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

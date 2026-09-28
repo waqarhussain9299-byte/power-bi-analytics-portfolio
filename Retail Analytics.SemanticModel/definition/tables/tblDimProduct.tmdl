@@ -1,0 +1,110 @@
+table tblDimProduct
+	lineageTag: 7032ef09-8fcf-43da-b8ac-9215f7bce234
+
+	column ProductID
+		dataType: string
+		isHidden
+		lineageTag: 5f53750b-e6dc-4129-a479-388e71468ea9
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductName
+		dataType: string
+		lineageTag: 76ad2c2b-2ad5-4f52-91dd-bb81d2dd145b
+		summarizeBy: none
+		sourceColumn: ProductName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category
+		dataType: string
+		lineageTag: da90521a-2c7f-4678-9e94-5e76a8053d12
+		summarizeBy: none
+		sourceColumn: Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column SubCategory
+		dataType: string
+		lineageTag: 70a1f991-8931-4a0e-9c26-9ea30b955907
+		summarizeBy: none
+		sourceColumn: SubCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column Brand
+		dataType: string
+		lineageTag: 3b4f476d-5376-4891-b18a-7b22f551fcc2
+		summarizeBy: none
+		sourceColumn: Brand
+
+		annotation SummarizationSetBy = Automatic
+
+	column PriceBand
+		dataType: string
+		lineageTag: 7d4ecd8b-bdc8-43df-ad3c-23dc25ab05d1
+		summarizeBy: none
+		sourceColumn: PriceBand
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsPrivateLabel
+		dataType: string
+		lineageTag: f47b0a58-91f3-41b7-bfaf-ac73966c8200
+		summarizeBy: none
+		sourceColumn: IsPrivateLabel
+
+		annotation SummarizationSetBy = Automatic
+
+	column ListPrice
+		dataType: double
+		lineageTag: 64b5eb7c-02ba-45c3-9250-fd77bdb1d57d
+		summarizeBy: none
+		sourceColumn: ListPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column StandardCost
+		dataType: double
+		lineageTag: d91c4ef1-3c66-4c4b-b28b-3ed4aaca753e
+		summarizeBy: none
+		sourceColumn: StandardCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProductStatus
+		dataType: string
+		lineageTag: 846f692f-ace0-4fb8-88da-a2519099147c
+		summarizeBy: none
+		sourceColumn: ProductStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column SourcingType
+		dataType: string
+		lineageTag: 51d0b867-5299-4359-8ae4-8d2c8bade0b7
+		summarizeBy: none
+		sourceColumn: SourcingType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimProduct = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimProduct_Table = Source{[Item="tblDimProduct",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimProduct_Table,{{"ProductID", type text}, {"ProductName", type text}, {"Category", type text}, {"SubCategory", type text}, {"Brand", type text}, {"PriceBand", type text}, {"IsPrivateLabel", type text}, {"ListPrice", type number}, {"StandardCost", type number}, {"ProductStatus", type text}, {"SourcingType", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

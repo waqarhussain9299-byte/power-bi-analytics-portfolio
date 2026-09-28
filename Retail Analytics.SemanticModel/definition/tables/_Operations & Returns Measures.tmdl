@@ -1,0 +1,75 @@
+/// Dedicated home table for operational, cancellation, fulfillment, shipping, and returns measures.
+table '_Operations & Returns Measures'
+	lineageTag: 32d1270a-9862-458e-a89d-a323a05b8f8b
+
+	/// Recorded returned units on non-cancelled order lines.
+	measure 'Return Quantity' = CALCULATE(SUM('tblFactSales'[ReturnQuantity]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: #,##0
+		displayFolder: Returns & Refunds
+		lineageTag: e7253e1d-30e7-4d56-abb6-d187949db796
+
+	/// Recorded returned units divided by ordered units on non-cancelled lines; this is a unit return rate, not an order return rate.
+	measure 'Return Rate %' = DIVIDE([Return Quantity], [Units Sold])
+		formatString: 0.00%
+		displayFolder: Returns & Refunds
+		lineageTag: dc10447a-b1df-49bd-a15f-913da78c34d6
+
+	/// Recorded return amount on non-cancelled order lines; excluded cancelled rows because the source includes return amounts on some cancelled lines.
+	measure 'Return Amount' = CALCULATE(SUM('tblFactSales'[ReturnAmount]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Returns & Refunds
+		lineageTag: b5d829c3-a93f-4219-80a2-a852a51b37e0
+
+	/// Net sales before returns less recorded return amount on non-cancelled lines. Tax is separate; the result may be negative in a filter context with returns exceeding sales.
+	measure 'Net Sales After Returns' = [Net Sales] - [Return Amount]
+		formatString: $#,##0.00
+		displayFolder: Returns & Refunds
+		lineageTag: bcf19547-d956-4e58-bfa1-272044f2f247
+
+	/// Recorded shipping cost on non-cancelled order lines.
+	measure 'Shipping Cost' = CALCULATE(SUM('tblFactSales'[ShippingCost]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Fulfillment & Shipping
+		lineageTag: b8a3a596-77f1-4115-8035-c2d6bfeb26ba
+
+	/// Average recorded ShipDays per distinct order, averaging lines within an order first and excluding cancelled lines.
+	measure 'Average Ship Days per Order' = AVERAGEX(VALUES('tblFactSales'[OrderNumber]), CALCULATE(AVERAGE('tblFactSales'[ShipDays]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled")))
+		formatString: 0.0
+		displayFolder: Fulfillment & Shipping
+		lineageTag: 6cf5d713-5140-4224-b8e6-2ce185189072
+
+	/// Distinct order numbers with at least one cancelled fact row; uses OrderNumber, not transaction-line count.
+	measure 'Cancelled Orders' = CALCULATE(DISTINCTCOUNT('tblFactSales'[OrderNumber]), KEEPFILTERS('tblFactSales'[OrderStatus] = "Cancelled"))
+		formatString: #,##0
+		displayFolder: Cancellations
+		lineageTag: e87197be-1aff-4668-874d-ce84bd4cec43
+
+	/// Gross value recorded on cancelled order lines; shown as cancelled value, not recognized sales.
+	measure 'Cancelled Gross Value' = CALCULATE(SUM('tblFactSales'[GrossSales]), KEEPFILTERS('tblFactSales'[OrderStatus] = "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Cancellations
+		lineageTag: 1411d6eb-d793-4162-9aae-61c57c8b53df
+
+	/// Source NetQuantity on non-cancelled order lines after recorded returns; not an inventory-on-hand measure.
+	measure 'Net Units After Returns' = CALCULATE(SUM('tblFactSales'[NetQuantity]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: #,##0
+		displayFolder: Quantity & Inventory-Related Analysis
+		lineageTag: b6381476-f089-4ae0-8b12-5d24fa7613cb
+
+	/// Distinct order numbers currently labelled Processing in the source data.
+	measure 'Processing Orders' = CALCULATE(DISTINCTCOUNT('tblFactSales'[OrderNumber]), KEEPFILTERS('tblFactSales'[OrderStatus] = "Processing"))
+		formatString: #,##0
+		displayFolder: Operational KPIs
+		lineageTag: f4af234d-01a3-4d3a-92f2-cf9c38661004
+
+	column '__Measure Placeholder'
+		isHidden
+		lineageTag: 8a4b82c9-2d76-49ad-8fa0-333060d87045
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [__Measure Placeholder]
+
+	partition '_Operations & Returns Measures' = calculated
+		mode: import
+		source = ROW("__Measure Placeholder", BLANK())
+

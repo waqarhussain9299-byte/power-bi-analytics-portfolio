@@ -1,0 +1,41 @@
+table tblDimOrderType
+	lineageTag: e51cbc54-5526-4198-8b9e-8b5fbe30ab4d
+
+	column OrderType
+		dataType: string
+		lineageTag: 69720e33-d1f5-41f4-b1d5-c124f2f3f328
+		summarizeBy: none
+		sourceColumn: OrderType
+
+		annotation SummarizationSetBy = Automatic
+
+	column ChannelGroup
+		dataType: string
+		lineageTag: 49f10bb0-5904-4040-b155-ecc13314b923
+		summarizeBy: none
+		sourceColumn: ChannelGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column TypicalFulfillment
+		dataType: string
+		lineageTag: 402cdacd-6c23-4a78-9563-d8dd8f6cd5d9
+		summarizeBy: none
+		sourceColumn: TypicalFulfillment
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimOrderType = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimOrderType_Table = Source{[Item="tblDimOrderType",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimOrderType_Table,{{"OrderType", type text}, {"ChannelGroup", type text}, {"TypicalFulfillment", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

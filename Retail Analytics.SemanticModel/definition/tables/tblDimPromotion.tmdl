@@ -1,0 +1,60 @@
+table tblDimPromotion
+	lineageTag: e6006b9a-4470-472a-a871-2a7afd35b1ba
+
+	column PromotionID
+		dataType: string
+		isHidden
+		lineageTag: 802ae2f9-2338-4b49-90b8-3da03ad34068
+		summarizeBy: none
+		sourceColumn: PromotionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionName
+		dataType: string
+		lineageTag: 9e7eaf0b-83e8-4423-99ca-919c865cc740
+		summarizeBy: none
+		sourceColumn: PromotionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionType
+		dataType: string
+		lineageTag: 7d149954-cf28-4b7b-8ba8-fd5e53e3e279
+		summarizeBy: none
+		sourceColumn: PromotionType
+
+		annotation SummarizationSetBy = Automatic
+
+	column StandardDiscountPct
+		dataType: double
+		lineageTag: 7615f4ba-a037-4abe-b1dc-becc22d2969b
+		summarizeBy: none
+		sourceColumn: StandardDiscountPct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Eligibility
+		dataType: string
+		lineageTag: 28a4235a-6cf6-438a-87ce-209b3a0cf396
+		summarizeBy: none
+		sourceColumn: Eligibility
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimPromotion = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimPromotion_Table = Source{[Item="tblDimPromotion",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimPromotion_Table,{{"PromotionID", type text}, {"PromotionName", type text}, {"PromotionType", type text}, {"StandardDiscountPct", type number}, {"Eligibility", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

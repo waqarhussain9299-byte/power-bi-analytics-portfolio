@@ -1,0 +1,59 @@
+{
+  "name": "RetailExecutive-e2515c9d78.json",
+  "dataColors": [
+    "#0F6B66",
+    "#D2A72E",
+    "#56877F",
+    "#BB5B52",
+    "#78918D",
+    "#A9C9C3",
+    "#8E7652",
+    "#DCCB8B",
+    "#3D7772",
+    "#A66A5E"
+  ],
+  "foreground": "#203A38",
+  "foregroundNeutralSecondary": "#5E736F",
+  "foregroundNeutralTertiary": "#82918E",
+  "foregroundNeutralLight": "#707070",
+  "background": "#FFFFFF",
+  "backgroundLight": "#F5F8F7",
+  "backgroundNeutral": "#E5ECEA",
+  "backgroundDark": "#D8E1DE",
+  "secondaryBackground": "#F8FAF9",
+  "tableAccent": "#0F6B66",
+  "accent": "#0A5599",
+  "shapeStroke": "#D1D1D1",
+  "disabledText": "#B3B3B3",
+  "good": "#237A59",
+  "neutral": "#D2A72E",
+  "bad": "#BB5B52",
+  "maximum": "#0F6B66",
+  "center": "#D2A72E",
+  "minimum": "#E0ECE9",
+  "null": "#BB5B52",
+  "hyperlink": "#0078d4",
+  "visitedHyperlink": "#0078d4",
+  "textClasses": {
+    "callout": {
+      "fontSize": 21,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#164B49"
+    },
+    "title": {
+      "fontSize": 12,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#164B49"
+    },
+    "header": {
+      "fontSize": 12,
+      "fontFace": "Segoe UI Semibold",
+      "color": "#164B49"
+    },
+    "label": {
+      "fontSize": 10.5,
+      "fontFace": "Segoe UI",
+      "color": "#627571"
+    }
+  }
+}

@@ -1,0 +1,57 @@
+/// Dedicated home table for calendar, monthly, quarterly, fiscal, and year-over-year measures.
+table '_Time Intelligence Measures'
+	lineageTag: e05b99a5-4d00-477d-acb6-f23fe92cd3cc
+
+	/// Calendar year-to-date net sales through the latest visible date, using the existing integer DateKey and Year fields.
+	measure 'Sales YTD' = VAR _Year = MAX('tblDimDate'[Year]) VAR _DateKey = MAX('tblDimDate'[DateKey]) RETURN CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), FILTER(ALL('tblDimDate'), 'tblDimDate'[Year] = _Year && 'tblDimDate'[DateKey] <= _DateKey))
+		formatString: $#,##0.00
+		displayFolder: Calendar KPIs
+		lineageTag: 549fe6c7-3368-49c9-a492-d062272d0445
+
+	/// Calendar month-to-date net sales through the latest visible date.
+	measure 'Sales MTD' = VAR _Year = MAX('tblDimDate'[Year]) VAR _Month = MAX('tblDimDate'[MonthNumber]) VAR _DateKey = MAX('tblDimDate'[DateKey]) RETURN CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), FILTER(ALL('tblDimDate'), 'tblDimDate'[Year] = _Year && 'tblDimDate'[MonthNumber] = _Month && 'tblDimDate'[DateKey] <= _DateKey))
+		formatString: $#,##0.00
+		displayFolder: Monthly Trends
+		lineageTag: bcc69b78-25af-4da4-9b42-73d86a77e494
+
+	/// Calendar quarter-to-date net sales through the latest visible date.
+	measure 'Sales QTD' = VAR _Year = MAX('tblDimDate'[Year]) VAR _Quarter = MAX('tblDimDate'[QuarterNumber]) VAR _DateKey = MAX('tblDimDate'[DateKey]) RETURN CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), FILTER(ALL('tblDimDate'), 'tblDimDate'[Year] = _Year && 'tblDimDate'[QuarterNumber] = _Quarter && 'tblDimDate'[DateKey] <= _DateKey))
+		formatString: $#,##0.00
+		displayFolder: Quarterly Trends
+		lineageTag: 835f53c2-2f38-4ba6-ac92-8c77bcb107b5
+
+	/// Year-to-date sales growth versus the same month and day range in the prior calendar year; blank when prior-year comparison data is unavailable.
+	measure 'Sales Growth %' = VAR _Year = MAX('tblDimDate'[Year]) VAR _DateKey = MAX('tblDimDate'[DateKey]) VAR _Month = MAX('tblDimDate'[MonthNumber]) VAR _Day = MOD(_DateKey, 100) VAR _PriorYearYTD = CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), FILTER(ALL('tblDimDate'), 'tblDimDate'[Year] = _Year - 1 && ('tblDimDate'[MonthNumber] < _Month || ('tblDimDate'[MonthNumber] = _Month && MOD('tblDimDate'[DateKey], 100) <= _Day)))) RETURN DIVIDE([Sales YTD] - _PriorYearYTD, _PriorYearYTD)
+		formatString: 0.00%
+		displayFolder: Year-over-Year Analysis
+		lineageTag: 0268954c-5f35-4cb1-a9df-f496b9ca3bc4
+
+	/// Net sales change versus the same visible calendar dates in the prior year. Requires one calendar year in filter context and returns blank when comparison data is unavailable.
+	measure 'Sales YoY %' = VAR _PriorYearDateKeys = SELECTCOLUMNS(VALUES('tblDimDate'[DateKey]), "DateKey", 'tblDimDate'[DateKey] - 10000) VAR _PriorYearSales = CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), TREATAS(_PriorYearDateKeys, 'tblDimDate'[DateKey])) RETURN IF(HASONEVALUE('tblDimDate'[Year]), DIVIDE([Net Sales] - _PriorYearSales, _PriorYearSales))
+		formatString: 0.00%
+		displayFolder: Year-over-Year Analysis
+		lineageTag: 9117f7c7-b00d-4cd9-a418-2525f87acd0e
+
+	/// Full calendar-month net sales change versus the full prior calendar month. Evaluates by month in a trend and uses the latest visible month in a card; returns blank only when no prior-month sales are available.
+	measure 'Sales MoM %' = VAR _MonthIndex = MAX('tblDimDate'[Year]) * 12 + MAX('tblDimDate'[MonthNumber]) VAR _CurrentMonthSales = CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), FILTER(ALL('tblDimDate'), 'tblDimDate'[Year] * 12 + 'tblDimDate'[MonthNumber] = _MonthIndex)) VAR _PriorMonthSales = CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), FILTER(ALL('tblDimDate'), 'tblDimDate'[Year] * 12 + 'tblDimDate'[MonthNumber] = _MonthIndex - 1)) RETURN DIVIDE(_CurrentMonthSales - _PriorMonthSales, _PriorMonthSales)
+		formatString: 0.00%
+		displayFolder: Month-over-Month Analysis
+		lineageTag: 85cbffa7-f8c6-40b4-b197-0ddccfe0f71c
+
+	/// Fiscal year-to-date net sales using the existing FiscalYear and FiscalMonthNumber attributes, through the latest visible date.
+	measure 'Sales Fiscal YTD' = VAR _FiscalYear = MAX('tblDimDate'[FiscalYear]) VAR _FiscalMonth = MAX('tblDimDate'[FiscalMonthNumber]) VAR _DateKey = MAX('tblDimDate'[DateKey]) RETURN CALCULATE([Net Sales], REMOVEFILTERS('tblDimDate'), FILTER(ALL('tblDimDate'), 'tblDimDate'[FiscalYear] = _FiscalYear && 'tblDimDate'[FiscalMonthNumber] <= _FiscalMonth && 'tblDimDate'[DateKey] <= _DateKey))
+		formatString: $#,##0.00
+		displayFolder: Fiscal Calendar Analysis
+		lineageTag: 07d9a90f-8a26-4580-827f-625dd9682efa
+
+	column '__Measure Placeholder'
+		isHidden
+		lineageTag: bc55828e-de1a-443b-bf3d-ca0c88a85244
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [__Measure Placeholder]
+
+	partition '_Time Intelligence Measures' = calculated
+		mode: import
+		source = ROW("__Measure Placeholder", BLANK())
+

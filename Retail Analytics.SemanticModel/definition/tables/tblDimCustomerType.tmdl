@@ -1,0 +1,33 @@
+table tblDimCustomerType
+	lineageTag: 74da22d3-2aa0-44b4-b47f-9a8d603be07f
+
+	column CustomerType
+		dataType: string
+		lineageTag: eee6edda-50e3-47cf-bde2-6d641cfca0b3
+		summarizeBy: none
+		sourceColumn: CustomerType
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: 74bf5310-e394-49cb-8dca-6ff5d73e9933
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimCustomerType = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimCustomerType_Table = Source{[Item="tblDimCustomerType",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimCustomerType_Table,{{"CustomerType", type text}, {"Description", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

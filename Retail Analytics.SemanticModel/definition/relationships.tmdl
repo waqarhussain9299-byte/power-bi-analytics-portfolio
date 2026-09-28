@@ -1,0 +1,44 @@
+relationship AutoDetected_b91b6988-a8fb-42e7-8b85-a271bd85eca2
+	fromColumn: tblFactSales.CustomerID
+	toColumn: tblDimCustomer.CustomerID
+
+relationship AutoDetected_8a7f7798-ffc0-4cb8-9268-522e7077a9b9
+	fromColumn: tblFactSales.CustomerType
+	toColumn: tblDimCustomerType.CustomerType
+
+relationship AutoDetected_26288fd5-a5d7-4a82-a73f-d9b9afa13f60
+	fromColumn: tblFactSales.DateKey
+	toColumn: tblDimDate.DateKey
+
+relationship AutoDetected_4cdb5001-f4c5-474a-a929-3a1fac1c30eb
+	fromColumn: tblFactSales.DeviceType
+	toColumn: tblDimDevice.DeviceType
+
+relationship AutoDetected_a613ca62-bfad-4d77-b047-a5c61d4b7fe2
+	fromColumn: tblFactSales.LoyaltyStatus
+	toColumn: tblDimLoyaltyStatus.LoyaltyStatus
+
+relationship AutoDetected_3235a4ca-c952-4aaa-8a67-22565e851bc5
+	fromColumn: tblFactSales.OrderType
+	toColumn: tblDimOrderType.OrderType
+
+relationship AutoDetected_f0257577-8546-44ae-be3f-c2a00d3689f8
+	fromColumn: tblFactSales.PaymentMethod
+	toColumn: tblDimPaymentMethod.PaymentMethod
+
+relationship AutoDetected_69b4a65e-ef1d-45eb-9f7e-e76c0e8dc07e
+	fromColumn: tblFactSales.ProductID
+	toColumn: tblDimProduct.ProductID
+
+relationship AutoDetected_2785dfcd-9790-42ae-88e4-c7bdaefabf98
+	fromColumn: tblFactSales.PromotionID
+	toColumn: tblDimPromotion.PromotionID
+
+relationship AutoDetected_ff138123-16f6-4b86-b54c-877590e49190
+	fromColumn: tblFactSales.SalesRepID
+	toColumn: tblDimSalesRep.SalesRepID
+
+relationship AutoDetected_281ea885-a339-4316-b81f-cf16484b3f00
+	fromColumn: tblFactSales.StoreID
+	toColumn: tblDimStore.StoreID
+

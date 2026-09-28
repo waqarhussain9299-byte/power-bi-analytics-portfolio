@@ -1,0 +1,81 @@
+/// Dedicated home table for customer segmentation, retention context, loyalty, and promotion measures.
+table '_Customer & Marketing Measures'
+	lineageTag: 528f0815-cf80-4955-afaa-39eda82671f1
+
+	/// Distinct customers with at least one non-cancelled order line in the current filter context.
+	measure 'Customers with Sales' = CALCULATE(DISTINCTCOUNT('tblFactSales'[CustomerID]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: #,##0
+		displayFolder: Customer KPIs
+		lineageTag: 4a31130d-3073-4ec0-966c-c23d44c7f718
+
+	/// Distinct customer records by their recorded acquisition channel; based on the customer dimension and is not affected by transaction-date filters.
+	measure 'Customers by Acquisition Channel' = DISTINCTCOUNT('tblDimCustomer'[CustomerID])
+		formatString: #,##0
+		displayFolder: Acquisition Channels
+		lineageTag: 24af71b7-df11-4ea2-a142-042d6b0e745e
+
+	/// Net sales before returns for fact rows labelled New, excluding cancelled transactions.
+	measure 'New Customer Sales' = CALCULATE([Net Sales], KEEPFILTERS('tblFactSales'[CustomerType] = "New"))
+		formatString: $#,##0.00
+		displayFolder: Customer Segmentation
+		lineageTag: 0f9dd1af-bf6e-489d-a079-330e8d60291c
+
+	/// Net sales before returns for fact rows labelled Returning; VIP is reported separately, not grouped into Returning.
+	measure 'Returning Customer Sales' = CALCULATE([Net Sales], KEEPFILTERS('tblFactSales'[CustomerType] = "Returning"))
+		formatString: $#,##0.00
+		displayFolder: Retention & Repeat Purchase
+		lineageTag: b367b09a-b4e2-4559-ae5b-e52743c05268
+
+	/// Net sales before returns for fact rows labelled VIP.
+	measure 'VIP Customer Sales' = CALCULATE([Net Sales], KEEPFILTERS('tblFactSales'[CustomerType] = "VIP"))
+		formatString: $#,##0.00
+		displayFolder: Customer Segmentation
+		lineageTag: 66fd1cf4-8dc4-4b77-a203-b50bfcf43233
+
+	/// Customers with more than one distinct non-cancelled order in the current filter context; this is an observed repeat-purchase count, not a cohort-retention measure.
+	measure 'Repeat Purchase Customers' = COUNTROWS(FILTER(VALUES('tblFactSales'[CustomerID]), CALCULATE(DISTINCTCOUNT('tblFactSales'[OrderNumber]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled")) > 1))
+		formatString: #,##0
+		displayFolder: Retention & Repeat Purchase
+		lineageTag: 8aaef7f9-473f-40cf-b2a5-87e81155744b
+
+	/// Customers with more than one distinct non-cancelled order divided by customers with non-cancelled sales in the current filter context.
+	measure 'Repeat Purchase Rate %' = DIVIDE([Repeat Purchase Customers], [Customers with Sales])
+		formatString: 0.00%
+		displayFolder: Retention & Repeat Purchase
+		lineageTag: 357a57e7-792d-4c87-b92f-0f1f93004124
+
+	/// Distinct customers with non-cancelled sales whose fact rows are labelled Loyalty Member.
+	measure 'Loyalty Member Customers' = CALCULATE(DISTINCTCOUNT('tblFactSales'[CustomerID]), KEEPFILTERS('tblFactSales'[LoyaltyStatus] = "Loyalty Member"), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: #,##0
+		displayFolder: Loyalty Analysis
+		lineageTag: 39173313-26a4-4f2a-bc7d-7c89459ab6dd
+
+	/// Net sales before returns for fact rows labelled Loyalty Member, excluding cancelled transactions.
+	measure 'Loyalty Member Sales' = CALCULATE([Net Sales], KEEPFILTERS('tblFactSales'[LoyaltyStatus] = "Loyalty Member"))
+		formatString: $#,##0.00
+		displayFolder: Loyalty Analysis
+		lineageTag: 69d26e19-7f23-4c88-958a-dfb4c32f28e9
+
+	/// Net sales before returns for promotion keys other than PR000 (the source dimension's No Promotion row).
+	measure 'Promoted Sales' = CALCULATE([Net Sales], KEEPFILTERS('tblDimPromotion'[PromotionID] <> "PR000"))
+		formatString: $#,##0.00
+		displayFolder: Campaign & Promotion Analysis
+		lineageTag: 114bad09-8667-4bfd-be76-ce13ac896eb7
+
+	/// Recorded discount amount on non-cancelled sales linked to an actual promotion, excluding PR000 (No Promotion); measures discount spend, not causal sales lift.
+	measure 'Promotion Discount Impact' = CALCULATE([Total Discount], KEEPFILTERS('tblDimPromotion'[PromotionID] <> "PR000"))
+		formatString: $#,##0.00
+		displayFolder: Campaign & Promotion Analysis
+		lineageTag: 788991b3-7604-44f6-8aa6-175465a21dc9
+
+	column '__Measure Placeholder'
+		isHidden
+		lineageTag: a856b6c7-690c-40f8-88d9-7e96d9ed64d7
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [__Measure Placeholder]
+
+	partition '_Customer & Marketing Measures' = calculated
+		mode: import
+		source = ROW("__Measure Placeholder", BLANK())
+

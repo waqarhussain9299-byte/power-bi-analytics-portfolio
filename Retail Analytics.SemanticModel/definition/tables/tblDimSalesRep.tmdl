@@ -1,0 +1,83 @@
+table tblDimSalesRep
+	lineageTag: 12996e40-db7d-439d-bd71-9ca9ab7bb3c1
+
+	column SalesRepID
+		dataType: string
+		isHidden
+		lineageTag: 58a26aed-c3af-44e2-b1a9-c488912564db
+		summarizeBy: none
+		sourceColumn: SalesRepID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesRepName
+		dataType: string
+		lineageTag: fee55acb-7a1d-46a1-8f02-f07058b5d8f2
+		summarizeBy: none
+		sourceColumn: SalesRepName
+
+		annotation SummarizationSetBy = Automatic
+
+	column JobTitle
+		dataType: string
+		lineageTag: 08eaf880-204d-49de-ac97-70f9d66bc786
+		summarizeBy: none
+		sourceColumn: JobTitle
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: c87f88b6-6845-4925-bb84-05090409f97c
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		lineageTag: 28c9871d-04eb-4b0c-87ef-3ce678c8532e
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory
+		dataType: string
+		lineageTag: a44e2090-6188-40a3-b7f5-642e653d7f64
+		summarizeBy: none
+		sourceColumn: Territory
+
+		annotation SummarizationSetBy = Automatic
+
+	column HireDate
+		dataType: int64
+		formatString: 0
+		lineageTag: d95b29aa-2d7c-4a6a-a555-01b0d8680945
+		summarizeBy: none
+		sourceColumn: HireDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeStatus
+		dataType: string
+		lineageTag: 0579f821-a9b3-40f1-a568-f25622223f12
+		summarizeBy: none
+		sourceColumn: EmployeeStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimSalesRep = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimSalesRep_Table = Source{[Item="tblDimSalesRep",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimSalesRep_Table,{{"SalesRepID", type text}, {"SalesRepName", type text}, {"JobTitle", type text}, {"Region", type text}, {"StateCode", type text}, {"Territory", type text}, {"HireDate", Int64.Type}, {"EmployeeStatus", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

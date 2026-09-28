@@ -1,0 +1,81 @@
+/// Dedicated home table for sales, revenue, margin, pricing, and order measures.
+table '_Sales Measures'
+	lineageTag: cdae790d-bf45-4148-a70a-0552d8e698fd
+
+	/// Gross merchandise value for non-cancelled order lines before discounts.
+	measure 'Gross Sales' = CALCULATE(SUM('tblFactSales'[GrossSales]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Revenue Analysis
+		lineageTag: 6f116c7b-8fcd-4837-9725-1a308dee509c
+
+	/// Recorded sales after discounts and before returns; excludes cancelled order lines. Returns are reported separately.
+	measure 'Net Sales' = CALCULATE(SUM('tblFactSales'[NetSales]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Revenue Analysis
+		lineageTag: 3fc31384-12c6-453d-a1be-730dc08027f0
+
+	/// Recorded discount amount on non-cancelled order lines.
+	measure 'Total Discount' = CALCULATE(SUM('tblFactSales'[DiscountAmount]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Pricing & Discounts
+		lineageTag: 74b51b38-42c5-43fd-a46a-b32286d7f94f
+
+	/// Recorded product cost for non-cancelled order lines.
+	measure 'Total Cost' = CALCULATE(SUM('tblFactSales'[TotalCost]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Profitability
+		lineageTag: fed1b6ca-91f7-4da7-b554-29a92f579886
+
+	/// Recorded profit on non-cancelled order lines; follows the source definition of net sales less product cost and shipping, with tax reported separately.
+	measure 'Total Profit' = CALCULATE(SUM('tblFactSales'[Profit]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Profitability
+		lineageTag: 11ca8d80-68b8-4849-b0e3-fedc13df154b
+
+	/// Recorded profit divided by net sales before returns. Returns and tax are shown separately.
+	measure 'Profit Margin %' = DIVIDE([Total Profit], [Net Sales])
+		formatString: 0.00%
+		displayFolder: Profitability
+		lineageTag: be660926-bb80-460e-af21-21e66b1aee63
+
+	/// Ordered units on non-cancelled order lines before returns.
+	measure 'Units Sold' = CALCULATE(SUM('tblFactSales'[Quantity]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: #,##0
+		displayFolder: Sales KPIs
+		lineageTag: 1b96ea1e-e45d-4791-8e29-7f1bcf2c9b3e
+
+	/// Distinct non-cancelled order numbers; transaction lines are not counted as separate orders.
+	measure 'Distinct Orders' = CALCULATE(DISTINCTCOUNT('tblFactSales'[OrderNumber]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: #,##0
+		displayFolder: Order Analysis
+		lineageTag: f3a099c1-a3f3-4d08-99a3-1a25e08b2095
+
+	/// Net sales before returns divided by distinct non-cancelled orders.
+	measure 'Average Order Value' = DIVIDE([Net Sales], [Distinct Orders])
+		formatString: $#,##0.00
+		displayFolder: Order Analysis
+		lineageTag: dfa1bfdf-08a1-495f-8a11-94cfd3c5aa77
+
+	/// Total recorded discount divided by gross sales for non-cancelled order lines.
+	measure 'Average Discount %' = DIVIDE([Total Discount], [Gross Sales])
+		formatString: 0.00%
+		displayFolder: Pricing & Discounts
+		lineageTag: 9386985d-45f2-4f7a-93b0-7985f54fc85a
+
+	/// Recorded tax on non-cancelled order lines; not included in the source profit calculation.
+	measure 'Tax Amount' = CALCULATE(SUM('tblFactSales'[TaxAmount]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: $#,##0.00
+		displayFolder: Revenue Analysis
+		lineageTag: 4f252438-8d0f-4919-bcb2-5f38a443a9be
+
+	column '__Measure Placeholder'
+		isHidden
+		lineageTag: 4cf9e9a9-774c-4398-87ac-719dd1c64307
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [__Measure Placeholder]
+
+	partition '_Sales Measures' = calculated
+		mode: import
+		source = ROW("__Measure Placeholder", BLANK())
+

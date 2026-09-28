@@ -1,0 +1,125 @@
+table tblDimCustomer
+	lineageTag: 660ce72c-329f-4e80-9113-aaeaea88aab1
+
+	column CustomerID
+		dataType: string
+		isHidden
+		lineageTag: 0e692043-18d0-44eb-bfbc-4368072f130a
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: 650e2a47-d995-4a1a-aa7e-b41fc0ea5b6a
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Segment
+		dataType: string
+		lineageTag: 445ac0c3-3938-426f-801e-d2ac8d24924d
+		summarizeBy: none
+		sourceColumn: Segment
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 9132aa5a-8703-493c-a2ab-1699e2e94f2a
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		lineageTag: 54568ba7-17eb-4101-a2d8-79fe0659f15c
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateName
+		dataType: string
+		lineageTag: 31cbdfd7-8fda-42bf-ae7a-11bc0aec437c
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: StateName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 2166796b-b2de-40f7-b156-293cdf36872b
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaType
+		dataType: string
+		lineageTag: 70dd79b5-4ec2-46e5-8674-563e8e3f6c45
+		summarizeBy: none
+		sourceColumn: AreaType
+
+		annotation SummarizationSetBy = Automatic
+
+	column SignupDate
+		dataType: int64
+		formatString: 0
+		lineageTag: a1b7ed16-a882-4b8d-aef4-fd0b69a748fc
+		summarizeBy: none
+		sourceColumn: SignupDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column AcquisitionChannel
+		dataType: string
+		lineageTag: 0b06806a-393c-4c87-91fd-16fc9a6ce155
+		summarizeBy: none
+		sourceColumn: AcquisitionChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerTier
+		dataType: string
+		lineageTag: 7215c086-ead5-4411-8161-b22731e6bad2
+		summarizeBy: none
+		sourceColumn: CustomerTier
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmailOptIn
+		dataType: string
+		lineageTag: 0ecb018e-c781-47f0-856c-e48c57b410f8
+		summarizeBy: none
+		sourceColumn: EmailOptIn
+
+		annotation SummarizationSetBy = Automatic
+
+	column SMSOptIn
+		dataType: string
+		lineageTag: d53c9298-6287-4db6-8e77-1e564ea91237
+		summarizeBy: none
+		sourceColumn: SMSOptIn
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimCustomer = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimCustomer_Table = Source{[Item="tblDimCustomer",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimCustomer_Table,{{"CustomerID", type text}, {"CustomerName", type text}, {"Segment", type text}, {"City", type text}, {"StateCode", type text}, {"StateName", type text}, {"Region", type text}, {"AreaType", type text}, {"SignupDate", Int64.Type}, {"AcquisitionChannel", type text}, {"CustomerTier", type text}, {"EmailOptIn", type text}, {"SMSOptIn", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

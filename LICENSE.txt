@@ -1,0 +1,5 @@
+No open-source license has been selected for this project.
+
+All rights are reserved by the project owner. Viewing or downloading the
+repository does not grant permission to redistribute, modify, or use the
+project or dataset. A license may be added by the owner before public release.

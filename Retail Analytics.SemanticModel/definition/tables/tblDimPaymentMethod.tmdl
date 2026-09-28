@@ -1,0 +1,51 @@
+table tblDimPaymentMethod
+	lineageTag: 3a6e83f3-e554-4d96-89c4-fd61beb2459c
+
+	column PaymentMethod
+		dataType: string
+		lineageTag: c550ad3b-3f68-4602-890f-5576298a5031
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column PaymentCategory
+		dataType: string
+		lineageTag: 03d9dcb2-7301-4fb5-ad53-6be5d44c1a59
+		summarizeBy: none
+		sourceColumn: PaymentCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column FeeRate
+		dataType: double
+		lineageTag: 96320d49-586e-40b2-b7a8-0cecb19f0d87
+		summarizeBy: none
+		sourceColumn: FeeRate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DigitalPaymentFlag
+		dataType: string
+		lineageTag: 1f8e32da-08c7-4773-a549-582bcbea4e66
+		summarizeBy: none
+		sourceColumn: DigitalPaymentFlag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimPaymentMethod = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimPaymentMethod_Table = Source{[Item="tblDimPaymentMethod",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimPaymentMethod_Table,{{"PaymentMethod", type text}, {"PaymentCategory", type text}, {"FeeRate", type number}, {"DigitalPaymentFlag", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

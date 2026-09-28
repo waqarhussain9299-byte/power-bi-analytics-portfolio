@@ -1,0 +1,395 @@
+table tblFactSales
+	lineageTag: db9fc2c9-4701-497b-84fd-feaeaedb5481
+
+	column TransactionID
+		dataType: string
+		isHidden
+		lineageTag: 52ee4c26-7476-4ac8-9102-f0cd63917144
+		summarizeBy: none
+		sourceColumn: TransactionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: de14e02c-9852-4f68-85ed-c22b938ec900
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderDate
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 23c15cb4-c0b8-4dc0-b3a9-a988235733c5
+		summarizeBy: none
+		sourceColumn: OrderDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		isHidden
+		lineageTag: 68f61cec-48f2-4bf4-a5ef-bed87ac0bc71
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductID
+		dataType: string
+		isHidden
+		lineageTag: 7d8f725b-f67d-4863-8d11-759e23fdacac
+		summarizeBy: none
+		sourceColumn: ProductID
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreID
+		dataType: string
+		isHidden
+		lineageTag: b0f1811b-1018-410a-8db7-97807c83635c
+		summarizeBy: none
+		sourceColumn: StoreID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesRepID
+		dataType: string
+		isHidden
+		lineageTag: d216581f-8372-4348-9cd0-b1a4332980ec
+		summarizeBy: none
+		sourceColumn: SalesRepID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionID
+		dataType: string
+		isHidden
+		lineageTag: d472a7ff-448e-4c6a-9dd4-6b81a9bdbed6
+		summarizeBy: none
+		sourceColumn: PromotionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderNumber
+		dataType: string
+		isHidden
+		lineageTag: 0087370f-e977-42f3-bc55-eef5973e8c7d
+		summarizeBy: none
+		sourceColumn: OrderNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderLineStatus
+		dataType: string
+		lineageTag: c1261551-515f-41bb-a9af-07078800af67
+		summarizeBy: none
+		sourceColumn: OrderLineStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderTimestamp
+		dataType: double
+		lineageTag: d7db57da-6f13-4a84-a929-ef5088729a2c
+		summarizeBy: none
+		sourceColumn: OrderTimestamp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OrderType
+		dataType: string
+		isHidden
+		lineageTag: e58798ad-e76c-4b80-8852-5c61a6b0bf27
+		summarizeBy: none
+		sourceColumn: OrderType
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesChannel
+		dataType: string
+		lineageTag: 7ff31959-4d2d-4879-a586-c00dcc3ed7a4
+		summarizeBy: none
+		sourceColumn: SalesChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column FulfillmentMethod
+		dataType: string
+		lineageTag: 7661420c-5c6d-4435-92e8-9053ca46b31e
+		summarizeBy: none
+		sourceColumn: FulfillmentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column PaymentMethod
+		dataType: string
+		isHidden
+		lineageTag: def3355b-3fcb-422c-a4b7-0213a00d34a6
+		summarizeBy: none
+		sourceColumn: PaymentMethod
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderStatus
+		dataType: string
+		lineageTag: dd19251e-eef1-412d-8a48-5be12ed9b24d
+		summarizeBy: none
+		sourceColumn: OrderStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quantity
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 85a5eda8-3441-4a8a-88a5-8aab5c9be7b1
+		summarizeBy: none
+		sourceColumn: Quantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column UnitPrice
+		dataType: double
+		lineageTag: 67db5877-c108-48ae-88b4-121f6d877bce
+		summarizeBy: none
+		sourceColumn: UnitPrice
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column UnitCost
+		dataType: double
+		lineageTag: 56f82181-64ec-4fd3-a5d0-92f430ab4ed6
+		summarizeBy: none
+		sourceColumn: UnitCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DiscountPct
+		dataType: double
+		lineageTag: cc76d4f8-5bc7-40be-af38-36e5c95d0cce
+		summarizeBy: none
+		sourceColumn: DiscountPct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GrossSales
+		dataType: double
+		isHidden
+		lineageTag: 9c7cefa7-7ce9-4e46-8fb7-24746b54ab23
+		summarizeBy: none
+		sourceColumn: GrossSales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DiscountAmount
+		dataType: double
+		isHidden
+		lineageTag: 9b58e0e0-92a8-45e3-a1f0-515ec0663c2c
+		summarizeBy: none
+		sourceColumn: DiscountAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NetSales
+		dataType: double
+		isHidden
+		lineageTag: a1003f2c-07c5-494e-9bb4-4458cf708883
+		summarizeBy: none
+		sourceColumn: NetSales
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalCost
+		dataType: double
+		isHidden
+		lineageTag: 41c737d0-ce4b-4494-8c36-bda0240279ad
+		summarizeBy: none
+		sourceColumn: TotalCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ShippingCost
+		dataType: double
+		isHidden
+		lineageTag: f62bf395-c6d6-4a20-9873-7a0062798569
+		summarizeBy: none
+		sourceColumn: ShippingCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TaxRate
+		dataType: double
+		lineageTag: 22d00236-6a51-4228-83a2-ffb43eb750e2
+		summarizeBy: none
+		sourceColumn: TaxRate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TaxAmount
+		dataType: double
+		isHidden
+		lineageTag: 2e6874d6-eb1c-4880-abb1-dd7b13f16168
+		summarizeBy: none
+		sourceColumn: TaxAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Profit
+		dataType: double
+		isHidden
+		lineageTag: ec7fc93e-1a12-49f9-a2f0-9d2056909f43
+		summarizeBy: none
+		sourceColumn: Profit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsReturned
+		dataType: string
+		lineageTag: 8560823d-e0a8-4571-87f4-764b169dddd6
+		summarizeBy: none
+		sourceColumn: IsReturned
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReturnQuantity
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6d1e361e-432c-4959-badc-9cb8c19a7ba5
+		summarizeBy: none
+		sourceColumn: ReturnQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReturnAmount
+		dataType: double
+		isHidden
+		lineageTag: 793b3b47-63ca-4cb0-8817-69d6dac4cef0
+		summarizeBy: none
+		sourceColumn: ReturnAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NetQuantity
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 27628d14-7b5d-4313-a5d2-042a0e1d75d6
+		summarizeBy: none
+		sourceColumn: NetQuantity
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShipDays
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7f4db1c1-570b-41cb-9af0-7b2f1c492991
+		summarizeBy: none
+		sourceColumn: ShipDays
+
+		annotation SummarizationSetBy = Automatic
+
+	column DeviceType
+		dataType: string
+		isHidden
+		lineageTag: 51e948ce-9a40-475f-ab86-4d6aab6e9ec3
+		summarizeBy: none
+		sourceColumn: DeviceType
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderSource
+		dataType: string
+		lineageTag: e5e6fa76-2cce-4ab8-9112-1a81e14da590
+		summarizeBy: none
+		sourceColumn: OrderSource
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerType
+		dataType: string
+		isHidden
+		lineageTag: a0cf1e14-4cca-4eed-aba8-340d87df1f2d
+		summarizeBy: none
+		sourceColumn: CustomerType
+
+		annotation SummarizationSetBy = Automatic
+
+	column LoyaltyStatus
+		dataType: string
+		isHidden
+		lineageTag: 8a55cc96-d042-44c8-a914-f3b30986e6a5
+		summarizeBy: none
+		sourceColumn: LoyaltyStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Currency
+		dataType: string
+		lineageTag: 9eb4660e-3d10-4829-b54d-f1a69f7aa1d6
+		summarizeBy: none
+		sourceColumn: Currency
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreRegion
+		dataType: string
+		lineageTag: 0a92e3ff-3dd5-4a20-b192-bbebb2d8b109
+		summarizeBy: none
+		sourceColumn: StoreRegion
+
+		annotation SummarizationSetBy = Automatic
+
+	column OrderQuarter
+		dataType: string
+		lineageTag: d1369a2c-8dd4-4ed7-b760-5e47c7523902
+		summarizeBy: none
+		sourceColumn: OrderQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblFactSales = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblFactSales_Table = Source{[Item="tblFactSales",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblFactSales_Table,{{"TransactionID", type text}, {"DateKey", Int64.Type}, {"OrderDate", Int64.Type}, {"CustomerID", type text}, {"ProductID", type text}, {"StoreID", type text}, {"SalesRepID", type text}, {"PromotionID", type text}, {"OrderNumber", type text}, {"OrderLineStatus", type text}, {"OrderTimestamp", type number}, {"OrderType", type text}, {"SalesChannel", type text}, {"FulfillmentMethod", type text}, {"PaymentMethod", type text}, {"OrderStatus", type text}, {"Quantity", Int64.Type}, {"UnitPrice", type number}, {"UnitCost", type number}, {"DiscountPct", type number}, {"GrossSales", type number}, {"DiscountAmount", type number}, {"NetSales", type number}, {"TotalCost", type number}, {"ShippingCost", type number}, {"TaxRate", type number}, {"TaxAmount", type number}, {"Profit", type number}, {"IsReturned", type text}, {"ReturnQuantity", Int64.Type}, {"ReturnAmount", type number}, {"NetQuantity", Int64.Type}, {"ShipDays", Int64.Type}, {"DeviceType", type text}, {"OrderSource", type text}, {"CustomerType", type text}, {"LoyaltyStatus", type text}, {"Currency", type text}, {"StoreRegion", type text}, {"OrderQuarter", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,111 @@
+table tblDimStore
+	lineageTag: 51cdd968-60e9-4c68-87d0-a8495ac41dbe
+
+	column StoreID
+		dataType: string
+		isHidden
+		lineageTag: add6c29d-acaf-464e-a37b-4e990dab2407
+		summarizeBy: none
+		sourceColumn: StoreID
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreName
+		dataType: string
+		lineageTag: b41f9e8f-0b18-46b5-9f0d-d6264381121f
+		summarizeBy: none
+		sourceColumn: StoreName
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: e3a90152-9f3f-4847-9069-dc1ac79d48a0
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateCode
+		dataType: string
+		lineageTag: fa34528c-2f24-401b-a291-5d295e0d10b2
+		summarizeBy: none
+		sourceColumn: StateCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column StateName
+		dataType: string
+		lineageTag: 90bf4dfe-3ad4-4ed1-8bcd-1e08b6f4cb4b
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: StateName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: ada04cac-01a1-4314-a86a-693968ea77a0
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Channel
+		dataType: string
+		lineageTag: 7456e633-9e33-4658-ad37-e69adefbb1d1
+		summarizeBy: none
+		sourceColumn: Channel
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreType
+		dataType: string
+		lineageTag: e38deccb-2487-4430-98bc-06ecef59b401
+		summarizeBy: none
+		sourceColumn: StoreType
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpenDate
+		dataType: int64
+		formatString: 0
+		lineageTag: 5f2a30c3-628f-4120-ae47-e6912579ed25
+		summarizeBy: none
+		sourceColumn: OpenDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreSize
+		dataType: string
+		lineageTag: d70db543-7d52-4f12-82b1-1028e182866c
+		summarizeBy: none
+		sourceColumn: StoreSize
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesIndex
+		dataType: double
+		lineageTag: c32c2099-6dfc-40d5-aa71-b9a7cc22c87f
+		summarizeBy: none
+		sourceColumn: SalesIndex
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition tblDimStore = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimStore_Table = Source{[Item="tblDimStore",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimStore_Table,{{"StoreID", type text}, {"StoreName", type text}, {"City", type text}, {"StateCode", type text}, {"StateName", type text}, {"Region", type text}, {"Channel", type text}, {"StoreType", type text}, {"OpenDate", Int64.Type}, {"StoreSize", type text}, {"SalesIndex", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

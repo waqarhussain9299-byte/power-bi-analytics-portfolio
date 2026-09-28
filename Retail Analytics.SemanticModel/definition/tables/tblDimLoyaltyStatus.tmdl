@@ -1,0 +1,33 @@
+table tblDimLoyaltyStatus
+	lineageTag: c9282bd4-a113-4f1a-91ec-8d541ddc1582
+
+	column LoyaltyStatus
+		dataType: string
+		lineageTag: 8bba9e43-a35d-4a3d-959f-65116feefd50
+		summarizeBy: none
+		sourceColumn: LoyaltyStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column Description
+		dataType: string
+		lineageTag: a672c137-6cec-4baa-894b-ef37e4099725
+		summarizeBy: none
+		sourceColumn: Description
+
+		annotation SummarizationSetBy = Automatic
+
+	partition tblDimLoyaltyStatus = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents("C:\RetailAnalytics\Sales_Star_Schema.xlsx"), null, true),
+				    tblDimLoyaltyStatus_Table = Source{[Item="tblDimLoyaltyStatus",Kind="Table"]}[Data],
+				    #"Changed Type" = Table.TransformColumnTypes(tblDimLoyaltyStatus_Table,{{"LoyaltyStatus", type text}, {"Description", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,51 @@
+/// Dedicated home table for geographic, store, regional, and channel performance measures.
+table '_Geography Measures'
+	lineageTag: e8cdb7c9-b85d-4800-8c65-ed487207e071
+
+	/// Distinct stores with non-cancelled sales in the current filter context.
+	measure 'Active Selling Stores' = CALCULATE(DISTINCTCOUNT('tblFactSales'[StoreID]), KEEPFILTERS('tblFactSales'[OrderStatus] <> "Cancelled"))
+		formatString: #,##0
+		displayFolder: Geographic KPIs
+		lineageTag: 09560754-fb5c-4fda-9393-924762eae7e5
+
+	/// Net sales before returns per store with non-cancelled sales in the current filter context.
+	measure 'Sales per Selling Store' = DIVIDE([Net Sales], [Active Selling Stores])
+		formatString: $#,##0.00
+		displayFolder: Store Performance
+		lineageTag: e20aa000-ad65-4e62-88ec-807ad5c50f34
+
+	/// Current store, state, or region sales as a share of all store sales, preserving non-geographic filters.
+	measure 'Store Sales Contribution %' = DIVIDE([Net Sales], CALCULATE([Net Sales], REMOVEFILTERS('tblDimStore'), REMOVEFILTERS('tblFactSales'[StoreID]), REMOVEFILTERS('tblFactSales'[StoreRegion])))
+		formatString: 0.00%
+		displayFolder: Store Performance
+		lineageTag: 47d08fd5-0908-45fa-8b7c-b17fe52f7d22
+
+	/// Current channel sales as a share of all channels, preserving non-channel filters.
+	measure 'Channel Sales Contribution %' = DIVIDE([Net Sales], CALCULATE([Net Sales], REMOVEFILTERS('tblDimOrderType'), REMOVEFILTERS('tblFactSales'[OrderType]), REMOVEFILTERS('tblFactSales'[SalesChannel])))
+		formatString: 0.00%
+		displayFolder: Channel Performance
+		lineageTag: 136cadeb-378f-4258-8b18-ef5e59f6b2ed
+
+	/// Dense rank of states by net sales before returns within the current non-state filter context.
+	measure 'State Sales Rank' = RANKX(ALL('tblDimStore'[StateName]), [Net Sales], , DESC, DENSE)
+		formatString: #,##0
+		displayFolder: State & Region Analysis
+		lineageTag: 365a8d99-3921-4ec2-ac42-55449fd13ad6
+
+	/// Dense rank of store regions by net sales before returns within the current non-region filter context.
+	measure 'Region Sales Rank' = RANKX(ALL('tblDimStore'[Region]), [Net Sales], , DESC, DENSE)
+		formatString: #,##0
+		displayFolder: Regional Comparisons
+		lineageTag: 5d0fc3eb-8ada-418d-9846-6888713af921
+
+	column '__Measure Placeholder'
+		isHidden
+		lineageTag: e21adb3d-2d06-4274-821d-b63f2157a837
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [__Measure Placeholder]
+
+	partition '_Geography Measures' = calculated
+		mode: import
+		source = ROW("__Measure Placeholder", BLANK())
+
